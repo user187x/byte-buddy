@@ -16,30 +16,40 @@ public class Agent {
 
     new AgentBuilder.Default().type(ElementMatchers.any())
     .transform((builder, typeDescription, classLoader, module, protectionDomain) -> builder
-    .method(ElementMatchers.named("format"))
-    .intercept(Advice.to(ValueInterceptor.class)))
+    .method(ElementMatchers.named("trigger"))
+    .intercept(Advice.to(TriggerInterceptor.class))
+    .method(ElementMatchers.named("after"))
+    .intercept(Advice.to(AfterInterceptor.class)))
     .installOn(instrumentation);
   }
 
-  public static class ValueInterceptor {
+  public static class TriggerInterceptor {
 
     @OnMethodEnter
-    static long enter(@Origin String method, @Argument(value = 0) String value, @Argument(value = 1) long size) throws Exception {
+    public static long enter(@Origin String method, @Argument(value = 0) String value, @Argument(value = 1) long size) throws Exception {
 
       long startEpoch = System.currentTimeMillis();
-
       System.out.println("value passed in : " + value + " size : " + size) ;
 
       return startEpoch;
     }
 
     @OnMethodExit
-    static void exit(@Origin String method, @Enter long startEpoch) throws Exception {
+    public static void exit(@Origin String method, @Enter long startEpoch) throws Exception {
 
       long endEpoch = System.currentTimeMillis();
       long duration = endEpoch - startEpoch;
 
       System.out.println(method + " elapsed " + duration + " ms");
+    }
+  }
+  
+  public static class AfterInterceptor {
+
+    @OnMethodEnter
+    public static void enter() throws Exception {
+
+      System.out.println("Intercpeted after method") ;
     }
   }
 }

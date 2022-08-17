@@ -1,5 +1,10 @@
 package io.xxx;
 
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class App {
   
   public static void main(String[] args) throws Exception {
@@ -18,20 +23,29 @@ public class App {
 //    
 //    app.trigger();
     
+    
     App app = new App();
-    app.format("test", 230L);
-    app.trigger();
+    
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    executor.scheduleWithFixedDelay(() -> app.trigger("test", 230L), 0, 1, TimeUnit.SECONDS);
+    
+    //This method should NOT be intercepted
+    app.before();
+    
+    //This should be intercepted
+    app.after();
   }
   
-  public void format(String value, long size) {
+  /**
+   * This method is the target of interception
+   * 
+   * @param value
+   * @param size
+   */
+  public void trigger(String value, long size) {
     
-    //Doing busy work
-  }
-  
-  public void trigger() {
-    
-    //Should not be intercepted
-    System.out.println("trigger");
+    System.out.println("trigger method invoked " + new Date().toString());
+    //Pretend busy work happening here
   }
   
   public void before() {
