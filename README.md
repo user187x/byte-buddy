@@ -1,0 +1,1 @@
+https://github.com/smartinrub/bytebuddy-example
