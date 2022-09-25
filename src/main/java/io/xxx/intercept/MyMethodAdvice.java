@@ -1,9 +1,9 @@
-package io.xxx.advice;
+package io.xxx.intercept;
 
 import io.xxx.model.Dog;
 import net.bytebuddy.asm.Advice;
 
-public class MyAdvice {
+public class MyMethodAdvice {
 
   @Advice.OnMethodEnter(suppress = Throwable.class)
   public static void onEnter(

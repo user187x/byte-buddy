@@ -1,9 +1,8 @@
 package io.xxx;
 
-import io.xxx.advice.MyAdvice;
-import io.xxx.intercept.Proxy;
+import io.xxx.intercept.MyMethodAdvice;
+import io.xxx.intercept.MyMethodDelegate;
 import io.xxx.model.Animal;
-import io.xxx.model.Dog;
 import io.xxx.model.Human;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.asm.Advice;
@@ -15,7 +14,7 @@ public class App {
   public static void main(String[] args) throws Exception {
 
     doMethodDelagation(new Human());
-    doMethodAdvice(new Dog());
+    //doMethodAdvice(new Dog());
   }
   
   public static void doMethodDelagation(Animal animal) throws Exception {
@@ -23,7 +22,7 @@ public class App {
     new ByteBuddy()
     .subclass(animal.getClass())
     .method(ElementMatchers.any())
-    .intercept(MethodDelegation.to(Proxy.class))
+    .intercept(MethodDelegation.to(MyMethodDelegate.class))
     .make()
     .load(animal.getClass().getClassLoader())
     .getLoaded()
@@ -37,7 +36,7 @@ public class App {
     new ByteBuddy()
     .subclass(animal.getClass())
     .method(ElementMatchers.any())
-    .intercept(Advice.to(MyAdvice.class))
+    .intercept(Advice.to(MyMethodAdvice.class))
     .make()
     .load(animal.getClass().getClassLoader())
     .getLoaded()

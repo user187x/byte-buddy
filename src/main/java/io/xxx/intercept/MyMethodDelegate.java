@@ -8,7 +8,7 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperMethod;
 import net.bytebuddy.implementation.bind.annotation.This;
 
-public class Proxy {
+public class MyMethodDelegate {
   
   @RuntimeType
   public static Object intercept(
@@ -21,10 +21,18 @@ public class Proxy {
     if(superMethod == null)
       return defaultValue;
     
-    System.out.println("I'm the proxy --> " + method.getName());
+    System.out.println("I'm the proxy intercepting method --> " + method.getName());
+    
+    if (args != null) {
+      for (int i = 0; i < args.length; i++) {
+        System.out.println("Argument: [" + i + "] = " + args[i] + " (" + args[i].getClass().getSimpleName() + ")");
+      }
+    }
 
     Object object = superMethod.invoke(self, args);
 
+    System.out.println("I'm the proxy capturing return value [" + object + "]");
+    
     return object;
   }
 }
