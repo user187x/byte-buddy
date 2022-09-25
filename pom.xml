@@ -14,7 +14,13 @@
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.12.13</version>
+			<version>1.12.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>2.2</version>
 		</dependency>
 	</dependencies>
 
@@ -51,7 +57,7 @@
 							<appendAssemblyId>false</appendAssemblyId>
 							<archive>
 								<manifestEntries>
-									<Premain-Class>io.xxx.Agent</Premain-Class>
+									<Premain-Class>io.xxx.agent.Agent</Premain-Class>
 								</manifestEntries>
 							</archive>
 							<descriptorRefs>
